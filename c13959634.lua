@@ -33,11 +33,26 @@ function c13959634.initial_effect(c)
 	e4:SetOperation(c13959634.leaveop)
 	c:RegisterEffect(e4)
 end
+-- function c13959634.spcon(e,c)
+-- 	if c==nil then return true end
+-- 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
+-- 		Duel.GetMatchingGroupCount(Card.IsAttribute,c:GetControler(),LOCATION_GRAVE,0,nil,ATTRIBUTE_WATER)==5
+-- end
+
+-- Code: The Elemental Awakening
+function c13959634.spfilter1(c,tp)
+	return Duel.IsExistingMatchingCard(c13959634.spfilter2,tp,LOCATION_GRAVE,0,2,c,c:GetAttribute())
+end
+function c13959634.spfilter2(c,att)
+	return c:IsAttribute(att)
+end
 function c13959634.spcon(e,c)
 	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
-		Duel.GetMatchingGroupCount(Card.IsAttribute,c:GetControler(),LOCATION_GRAVE,0,nil,ATTRIBUTE_WATER)==5
+	local tp=c:GetControler()
+	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and	Duel.IsExistingMatchingCard(c13959634.spfilter1,tp,LOCATION_GRAVE,0,1,nil,tp)
 end
+
 function c13959634.hdtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,0,1-tp,2)
